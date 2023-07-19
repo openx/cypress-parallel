@@ -15,15 +15,15 @@ const {
 const { executeThread } = require('./thread');
 const { resultsPath } = require('./shared-config');
 
-function cleanResultsPath() { 
+function cleanResultsPath() {
   if(!fs.existsSync(resultsPath)) {
-    fs.mkdirSync(resultsPath, { recursive: true }) 
+    fs.mkdirSync(resultsPath, { recursive: true })
   } else {
     fs.readdir(resultsPath, (err, files) => {
-      if (err) console.log(err); 
+      if (err) console.log(err);
         for (const file of files) {
-          fs.unlink(path.join(resultsPath, file), err => { if (err) console.log(err); }); 
-        } 
+          fs.unlink(path.join(resultsPath, file), err => { if (err) console.log(err); });
+        }
       });
     }
   }
@@ -37,7 +37,7 @@ async function start() {
   const end = new Date();
   const timeTaken = end.getTime() - start.getTime();
 
-  const resultsPath = path.join(process.cwd(), 'runner-results');
+  const resultsPath = path.join(process.cwd(), settings.runnerResults);
   const resultMaps = [collectResults(resultsPath)];
 
   let timeMap = new Map();

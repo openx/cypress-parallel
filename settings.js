@@ -58,10 +58,15 @@ const argv = yargs
     default: true,
     description: 'Strict mode checks'
   })
-   .option('weightsJson', {
+  .option('`weightsJson`', {
      alias: 'w',
      type: 'string',
      description: 'Parallel weights json file'
+  })
+  .option('runnerResults', {
+    alias: 'x',
+    type: 'string',
+    description: 'Path where cypress results will be located'
   }).argv;
 
 if (!argv.script) {
@@ -94,7 +99,8 @@ const settings = {
   reporterOptionsPath: argv.reporterOptionsPath,
   script: argv.script,
   strictMode: argv.strictMode,
-  scriptArguments: argv.args ? argv.args.split(' ') : []
+  scriptArguments: argv.args ? argv.args.split(' ') : [],
+  runnerResults: argv.runnerResults ? argv.runnerResults : 'runner-new',
 };
 
 process.env.CY_PARALLEL_SETTINGS = JSON.stringify(settings);

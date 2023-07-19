@@ -3,6 +3,7 @@ const path = require('path');
 const glob = require('glob');
 
 const { settings } = require('./settings');
+const { resultsPath } = require('./shared-config');
 
 const getFilePathsByPath = (dir) =>
   fs.readdirSync(dir).reduce((files, file) => {
@@ -27,6 +28,7 @@ const getFilePathsByGlob = (pattern) => {
 
 async function getTestSuitePaths() {
   const isPattern = settings.testSuitesPath.includes('*');
+  console.log(`Cleaning results path ${resultsPath}`);
   let fileList;
   if (isPattern) {
     console.log(`Using pattern ${settings.testSuitesPath} to find test suites`);
@@ -87,7 +89,7 @@ function distributeTestsByWeight(testSuitePaths) {
     threads[0].list.push(key);
     threads[0].weight += +value;
   }
-  
+
   // Run slowest group first
   threads.sort((a, b) => b.weight - a.weight);
 

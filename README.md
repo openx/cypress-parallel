@@ -23,13 +23,13 @@ Reduce up to 40% your Cypress suite execution time parallelizing the test run on
 ## Install
 
 ```
-npm i cypress-parallel -D
+npm i cypress-parallel
 ```
 
 or
 
 ```
-yarn add cypress-parallel -D
+yarn add cypress-parallel
 ```
 
 ## Add a new script
@@ -40,7 +40,7 @@ In your `package.json` add a new script:
 "scripts" :{
   ...
   "cy:run": "cypress run", // It can be any cypress command with any argument
-  "cy:parallel" : "cypress-parallel -s cy:run -t 2 -d '<your-cypress-specs-folder>' -a '\"<your-cypress-cmd-args>\"'"
+  "cy:parallel" : "cypress-parallel -s cy:run -t 2 -d <your-cypress-specs-folder> -a '\"<your-cypress-cmd-args>\"'"
   ...
 }
 ```
@@ -64,7 +64,7 @@ or
 Run with npx (no package installation needed)
 
 ```
-npx cy:parallel -s cy:run -t 2 -d '<your-cypress-specs-folder>' -a '"<your-cypress-cmd-args>"'
+npx cy:parallel -s cy:run -t 2 -d <your-cypress-specs-folder> -a '\"<your-cypress-cmd-args>\"'
 ```
 
 ### Scripts options
@@ -105,21 +105,10 @@ npx cy:parallel -s cy:run -t 2 -d '<your-cypress-specs-folder>' -a '"<your-cypre
 }
 ```
 
-## Env variables
-
-### CYPRESS_THREAD
-
-You can get the current thread index by reading the `CYPRESS_THREAD` variable.
-
-```javascript
- const threadIndex = process.env.CYPRESS_THREAD;
- // return 1, 2, 3, 4, ...
-```
-
 # Contributors
 
 Looking for contributors.
 
 # License
 
-This project is licensed under the MIT license. See [LICENSE](LICENSE).
+MIT
