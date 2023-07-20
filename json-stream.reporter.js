@@ -10,9 +10,9 @@ var constants = require('mocha/lib/runner').constants;
 var path = require('path');
 var fs = require('fs');
 
-const { resultsPath } = require('./shared-config');
-
 const { EVENT_SUITE_END } = constants;
+const reporterConfigPath = path.join(process.cwd(), 'multi-reporter-config.json');
+const resultsPath = JSON.parse(fs.readFileSync(reporterConfigPath, 'utf8')).runnerResults;
 
 /**
  * Expose `JSONStream`.

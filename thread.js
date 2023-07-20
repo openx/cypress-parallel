@@ -31,12 +31,12 @@ function createReporterOptions(string) {
 }
 
 function createReporterConfigFile(path) {
-  const reporterEnabled = ['cypress-parallel/json-stream.reporter.js'];
+  const reporterEnabled = ['@openx/cypress-parallel/json-stream.reporter.js'];
   let reporterName = settings.reporter;
   if (settings.reporter) {
     reporterEnabled.push(reporterName);
   } else {
-    reporterEnabled.push('cypress-parallel/simple-spec.reporter.js');
+    reporterEnabled.push('@openx/cypress-parallel/simple-spec.reporter.js');
   }
   const content = {
     reporterEnabled: reporterEnabled.join(', ')
@@ -46,6 +46,7 @@ function createReporterConfigFile(path) {
     const optionName = `${camelCase(reporterName)}ReporterOptions`;
     content[optionName] = createReporterOptions(settings.reporterOptions);
   }
+  content['runnerResults'] = settings.runnerResults;
   fs.writeFileSync(path, JSON.stringify(content, null, 2));
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@openx/cypress-parallel",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Reduce up to 40% your Cypress suite execution time parallelizing the test run on the same machine.",
   "main": "cli.js",
   "repository": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/tnicola/cypress-parallel#readme",
   "bin": {
-    "cypress-parallel": "cli.js"
+    "cypress-parallel-openx": "cli.js"
   },
   "dependencies": {
     "cli-table3": "^0.6.0",

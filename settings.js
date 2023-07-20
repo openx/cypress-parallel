@@ -70,7 +70,7 @@ const argv = yargs
   }).argv;
 
 if (!argv.script) {
-  throw new Error('Expected command, e.g.: cypress-parallel <cypress-script>');
+  throw new Error('Expected command, e.g.: cypress-parallel-openx <cypress-script>');
 }
 
 const COLORS = [
@@ -100,7 +100,7 @@ const settings = {
   script: argv.script,
   strictMode: argv.strictMode,
   scriptArguments: argv.args ? argv.args.split(' ') : [],
-  runnerResults: argv.runnerResults ? argv.runnerResults : 'runner-new',
+  runnerResults: argv.runnerResults ? argv.runnerResults : 'runner-results',
 };
 
 process.env.CY_PARALLEL_SETTINGS = JSON.stringify(settings);
