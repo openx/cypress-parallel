@@ -58,7 +58,7 @@ const argv = yargs
     default: true,
     description: 'Strict mode checks'
   })
-  .option('`weightsJson`', {
+  .option('weightsJson', {
      alias: 'w',
      type: 'string',
      description: 'Parallel weights json file'

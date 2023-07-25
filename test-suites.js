@@ -57,10 +57,11 @@ async function getTestSuitePaths() {
 
 function distributeTestsByWeight(testSuitePaths) {
   let specWeights = {};
+  const weightPath = path.join(process.cwd(), settings.weightsJSON);
   try {
-    specWeights = JSON.parse(fs.readFileSync(settings.weightsJSON, 'utf8'));
+    specWeights = JSON.parse(fs.readFileSync(weightPath, 'utf8'));
   } catch (err) {
-    console.log(`Weight file not found in path: ${settings.weightsJSON}`);
+    console.log(`Weight file not found in path: ${weightPath}`);
   }
 
   let map = new Map();
