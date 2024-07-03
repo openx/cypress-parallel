@@ -1,7 +1,7 @@
 name: ci
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -19,31 +19,31 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14.20'
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Prepare demo-app
-      run: |
-        cd pizza-demo
-        npm ci
-    - name: Prepare lib
-      run: |
-        cd lib
-        npm ci
-    - name: Prepare root
-      run: |
-        npm ci
-    - name: Execute tests with defaults
-      run: |
-        npm run serve-and-test:parallel
-    - name: Execute only some tests
-      run: |
-        npm run serve-and-test:parallel:some
-    - name: Execute tests with spec reporter
-      run: |
-        npm run serve-and-test:parallel:spec
-    - name: Execute tests with junit reporter
-      run: |
-        npm run serve-and-test:parallel:junit
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.20'
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prepare demo-app
+        run: |
+          cd pizza-demo
+          npm ci
+      - name: Prepare lib
+        run: |
+          cd lib
+          npm ci
+      - name: Prepare root
+        run: |
+          npm ci
+      - name: Execute tests with defaults
+        run: |
+          npm run serve-and-test:parallel
+      - name: Execute only some tests
+        run: |
+          npm run serve-and-test:parallel:some
+      - name: Execute tests with spec reporter
+        run: |
+          npm run serve-and-test:parallel:spec
+      - name: Execute tests with junit reporter
+        run: |
+          npm run serve-and-test:parallel:junit
