@@ -4,7 +4,7 @@
 
 Reduce up to 40% your Cypress suite execution time parallelizing the test run on the same machine.
 
-|                                                          cypress                                                          |                                                      cypress-parallel                                                       |
+|                                                          cypress                                                          |                                                   cypress-parallel-openx                                                    |
 | :-----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: |
 | ![cy-serial-small](https://user-images.githubusercontent.com/38537547/114301114-92600a80-9ac3-11eb-9166-e95ae9cd5178.gif) | ![cy-parallel_small](https://user-images.githubusercontent.com/38537547/114301127-9db33600-9ac3-11eb-9bfc-c2096023bba7.gif) |
 
@@ -23,13 +23,13 @@ Reduce up to 40% your Cypress suite execution time parallelizing the test run on
 ## Install
 
 ```sh
-npm i cypress-parallel -D
+npm i cypress-parallel-openx -D
 ```
 
 or
 
 ```
-yarn add cypress-parallel -D
+yarn add cypress-parallel-openx -D
 ```
 
 ## Add a new script
@@ -40,7 +40,7 @@ In your `package.json` add a new script:
 "scripts" :{
   ...
   "cy:run": "cypress run", // It can be any cypress command with any argument
-  "cy:parallel" : "cypress-parallel -s cy:run -t 2 -d '<your-cypress-specs-folder>' -a '\"<your-cypress-cmd-args>\"'"
+  "cy:parallel" : "cypress-parallel-openx -s cy:run -t 2 -d '<your-cypress-specs-folder>' -a '\"<your-cypress-cmd-args>\"'"
   ...
 }
 ```
@@ -70,7 +70,7 @@ npx cy:parallel -s cy:run -t 2 -d '<your-cypress-specs-folder>' -a '"<your-cypre
 ## Passing Specs
 
 ```sh
-cypress-parallel -s cy:run -t 2 -a '\"<your-cypress-cmd-args>\"' --spec path/to/spec1.spec.js path/to/spec2.spec.js
+cypress-parallel-openx -s cy:run -t 2 -a '\"<your-cypress-cmd-args>\"' --spec path/to/spec1.spec.js path/to/spec2.spec.js
 ```
 
 ### Scripts options
@@ -98,7 +98,7 @@ cypress-parallel -s cy:run -t 2 -a '\"<your-cypress-cmd-args>\"' --spec path/to/
 ```json
 "scripts" :{
   ...
-  "cy:parallel" : "cypress-parallel -s cy:run -t 4 -m false"
+  "cy:parallel" : "cypress-parallel-openx -s cy:run -t 4 -m false"
   ...
 }
 ```
@@ -108,7 +108,7 @@ cypress-parallel -s cy:run -t 2 -a '\"<your-cypress-cmd-args>\"' --spec path/to/
 ```json
 "scripts" :{
   ...
-  "cy:parallel" : "cypress-parallel -s cy:run -t 4 -n .../../../node_modules/cypress-multi-reporters"
+  "cy:parallel" : "cypress-parallel-openx -s cy:run -t 4 -n .../../../node_modules/cypress-multi-reporters"
   ...
 }
 ```
