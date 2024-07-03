@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/tnicola/cypress-parallel#readme",
   "bin": {
-    "cypress-parallel-openx": "cli.js"
+    "cypress-parallel-openx": "./cli.js"
   },
   "dependencies": {
     "cli-table3": "^0.6.0",
