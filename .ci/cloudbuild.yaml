@@ -1,0 +1,17 @@
+steps:
+  - id: install
+    name: node:20
+    timeout: 300s
+    entrypoint: npm
+    args: ['ci']
+
+  - id: publish
+    name: node:20
+    secretEnv: ['GITHUB_TOKEN']
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        ! [[ "$BRANCH_NAME" =~ ^(master)$ ]] && exit 0
+        npm run artifactregistry-login
+        npm publish
