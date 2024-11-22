@@ -7,7 +7,6 @@ steps:
 
   - id: publish
     name: node:20
-    secretEnv: ['GITHUB_TOKEN']
     entrypoint: bash
     args:
       - '-c'
