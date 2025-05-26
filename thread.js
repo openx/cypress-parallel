@@ -88,7 +88,6 @@ async function executeThread(thread, index) {
     const processOptions = {
       cwd: process.cwd(),
       stdio: 'pipe',
-      stderr: 'pipe',
       env: {
         ...process.env,
         CYPRESS_THREAD: (index + 1).toString()
