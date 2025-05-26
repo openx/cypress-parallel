@@ -87,13 +87,46 @@ async function executeThread(thread, index) {
   const promise = new Promise((resolve, reject) => {
     const processOptions = {
       cwd: process.cwd(),
-      stdio: 'inherit',
+      stdio: 'pipe',
+      stderr: 'pipe',
       env: {
         ...process.env,
         CYPRESS_THREAD: (index + 1).toString()
       }
     };
     const child = spawn(packageManager, commandArguments, processOptions);
+
+    let stdoutBuffer = '';
+
+    child.stdout.on('data', function (chunk) {
+      stdoutBuffer += chunk;
+      const lines = stdoutBuffer.split('\n');
+      while (lines.length > 1) {
+        const line = lines.shift();
+        console.log(`[${index}]`, line);
+      }
+      stdoutBuffer = lines.shift();
+    });
+
+    child.stdout.on('end', function () {
+      console.log(`[${index}]`, stdoutBuffer);
+    });
+
+    let stderrBuffer = '';
+
+    child.stderr.on('data', function (chunk) {
+      stderrBuffer += chunk;
+      const lines = stderrBuffer.split('\n');
+      while (lines.length > 1) {
+        const line = lines.shift();
+        console.error(`[${index}]`, line);
+      }
+      stderrBuffer = lines.shift();
+    });
+
+    child.stderr.on('end', function () {
+      console.error(`[${index}]`, stderrBuffer);
+    });
 
     child.on('exit', (exitCode) => {
       if (settings.isVerbose) {
