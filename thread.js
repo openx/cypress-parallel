@@ -9,13 +9,7 @@ const { settings } = require('./settings');
 const { sleep } = require('./utility');
 
 function getPackageManager() {
-  const pckManager = isYarn
-    ? 'yarn'
-    : process.platform === 'win32'
-      ? 'npm.cmd'
-      : 'npm';
-
-  return pckManager;
+  return 'bun';
 }
 
 function createReporterOptions(string) {
