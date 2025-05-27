@@ -78,6 +78,8 @@ function createCommandArguments(thread) {
 async function executeThread(thread, index) {
   const packageManager = getPackageManager();
   const commandArguments = createCommandArguments(thread);
+  const cypressThreadNumber = (index + 1).toString();
+  const threadPrefix = `[${cypressThreadNumber}/${settings.threadCount}]`;
 
   // staggered start (when executed in container with xvfb ends up having a race condition causing intermittent failures)
   await sleep((index + 1) * 5000);
@@ -90,7 +92,7 @@ async function executeThread(thread, index) {
       stdio: 'pipe',
       env: {
         ...process.env,
-        CYPRESS_THREAD: (index + 1).toString()
+        CYPRESS_THREAD: cypressThreadNumber,
       }
     };
     const child = spawn(packageManager, commandArguments, processOptions);
@@ -102,13 +104,13 @@ async function executeThread(thread, index) {
       const lines = stdoutBuffer.split('\n');
       while (lines.length > 1) {
         const line = lines.shift();
-        console.log(`[${index}]`, line);
+        console.log(threadPrefix, line);
       }
       stdoutBuffer = lines.shift();
     });
 
     child.stdout.on('end', function () {
-      console.log(`[${index}]`, stdoutBuffer);
+      console.log(threadPrefix, stdoutBuffer);
     });
 
     let stderrBuffer = '';
@@ -118,26 +120,26 @@ async function executeThread(thread, index) {
       const lines = stderrBuffer.split('\n');
       while (lines.length > 1) {
         const line = lines.shift();
-        console.error(`[${index}]`, line);
+        console.error(threadPrefix, line);
       }
       stderrBuffer = lines.shift();
     });
 
     child.stderr.on('end', function () {
-      console.error(`[${index}]`, stderrBuffer);
+      console.error(threadPrefix, stderrBuffer);
     });
 
     child.on('exit', (exitCode) => {
       if (settings.isVerbose) {
         console.log(
-          `Thread ${index} likely finished with failure count: ${exitCode}`
+          `${threadPrefix} Thread likely finished with failure count: ${exitCode}`
         );
       }
       // should preferably exit earlier, but this is simple and better than nothing
       if (settings.shouldBail) {
         if (exitCode > 0) {
           console.error(
-            'BAIL set and thread exited with errors, exit early with error'
+            `${threadPrefix} BAIL set and thread exited with errors, exit early with error`
           );
           process.exit(exitCode);
         }
