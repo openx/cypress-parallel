@@ -80,7 +80,7 @@ async function executeThread(thread, index) {
   const commandArguments = createCommandArguments(thread);
 
   // staggered start (when executed in container with xvfb ends up having a race condition causing intermittent failures)
-  await sleep(index * 5000);
+  await sleep((index + 1) * 5000);
 
   const timeMap = new Map();
 

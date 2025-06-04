@@ -27,6 +27,10 @@ const argv = yargs
     type: 'string',
     description: 'Cypress specs directory'
   })
+  .option('spec', {
+    type: 'array',
+    description: 'List of Cypress spec paths'
+  })
   .option('args', {
     alias: 'a',
     type: 'string',
@@ -87,9 +91,12 @@ const COLORS = [
 const settings = {
   threadCount: argv.threads ? argv.threads : 2,
   testSuitesPath: argv.specsDir ? argv.specsDir : 'cypress/integration',
+  testSuitesPaths: argv.spec ? argv.spec : undefined,
   shouldBail: argv.bail ? argv.bail : false,
   isVerbose: argv.verbose ? argv.verbose : false,
-  weightsJSON: argv.weightsJson ? argv.weightsJson : 'cypress/parallel-weights.json',
+  weightsJSON: argv.weightsJson
+    ? argv.weightsJson
+    : 'cypress/parallel-weights.json',
   defaultWeight: 1,
   reporter: argv.reporter,
   reporterModulePath: argv.reporterModulePath

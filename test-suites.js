@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const glob = require('glob');
+const { glob } = require('glob');
 
 const { settings } = require('./settings');
 const { resultsPath } = require('./shared-config');
@@ -13,26 +13,15 @@ const getFilePathsByPath = (dir) =>
     return [...files, name];
   }, []);
 
-const getFilePathsByGlob = (pattern) => {
-  const globOptions = {};
-  return new Promise((resolve, reject) => {
-    glob(pattern, globOptions, function (error, files) {
-      if (error) {
-        reject(error);
-        throw error;
-      }
-      resolve(files);
-    });
-  });
-};
-
 async function getTestSuitePaths() {
   const isPattern = settings.testSuitesPath.includes('*');
   console.log(`Cleaning results path ${resultsPath}`);
   let fileList;
-  if (isPattern) {
+  if (settings.testSuitesPaths) {
+    fileList = settings.testSuitesPaths;
+  } else if (isPattern) {
     console.log(`Using pattern ${settings.testSuitesPath} to find test suites`);
-    fileList = await getFilePathsByGlob(settings.testSuitesPath);
+    fileList = await glob(settings.testSuitesPath, { ignore: 'node_modules/**' });
   } else {
     console.log(
       'DEPRECATED: using path is deprecated and will be removed, switch to glob pattern'
@@ -48,11 +37,23 @@ async function getTestSuitePaths() {
 
   // We can't run more threads than suites
   if (fileList.length < settings.threadCount) {
-    console.log(`Thread setting is ${settings.threadCount}, but only ${fileList.length} test suite(s) were found. Adjusting configuration accordingly.`)
-    settings.threadCount = fileList.length
+    console.log(
+      `Thread setting is ${settings.threadCount}, but only ${fileList.length} test suite(s) were found. Adjusting configuration accordingly.`
+    );
+    settings.threadCount = fileList.length;
   }
 
   return fileList;
+}
+
+function getMaxPathLenghtFrom(testSuitePaths) {
+  let maxLength = 10;
+
+  for(let path of testSuitePaths){
+    maxLength = Math.max(maxLength, path.length);
+  }
+
+  return maxLength + 3;
 }
 
 function distributeTestsByWeight(testSuitePaths) {
@@ -99,5 +100,6 @@ function distributeTestsByWeight(testSuitePaths) {
 
 module.exports = {
   getTestSuitePaths,
-  distributeTestsByWeight
+  distributeTestsByWeight,
+  getMaxPathLenghtFrom
 };
