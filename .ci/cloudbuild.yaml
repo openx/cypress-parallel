@@ -11,6 +11,6 @@ steps:
     args:
       - '-c'
       - |
-        ! [[ "$BRANCH_NAME" =~ ^(feat/add-thread-indicator-in-logs)$ ]] && exit 0
+        ! [[ "$BRANCH_NAME" =~ ^(master)$ ]] && exit 0
         npm run artifactregistry-login
         npm publish
