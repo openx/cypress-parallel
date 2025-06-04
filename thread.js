@@ -12,8 +12,8 @@ function getPackageManager() {
   const pckManager = isYarn
     ? 'yarn'
     : process.platform === 'win32'
-      ? 'npm.cmd'
-      : 'npm';
+    ? 'npm.cmd'
+    : 'npm';
 
   return pckManager;
 }
@@ -31,12 +31,16 @@ function createReporterOptions(string) {
 }
 
 function createReporterConfigFile(path) {
-  const reporterEnabled = ['@openx/cypress-parallel-test-log/json-stream.reporter.js'];
+  const reporterEnabled = [
+    '@openx/cypress-parallel-test-log/json-stream.reporter.js'
+  ];
   let reporterName = settings.reporter;
   if (settings.reporter) {
     reporterEnabled.push(reporterName);
   } else {
-    reporterEnabled.push('@openx/cypress-parallel-test-log/simple-spec.reporter.js');
+    reporterEnabled.push(
+      '@openx/cypress-parallel-test-log/simple-spec.reporter.js'
+    );
   }
   const content = {
     reporterEnabled: reporterEnabled.join(', ')
@@ -51,7 +55,7 @@ function createReporterConfigFile(path) {
 }
 
 function createCommandArguments(thread) {
-  const specFiles = `${thread.list.map(path => globEscape(path)).join(',')}`;
+  const specFiles = `${thread.list.map((path) => globEscape(path)).join(',')}`;
   const childOptions = [
     'run',
     `${settings.script}`,
@@ -92,7 +96,7 @@ async function executeThread(thread, index) {
       stdio: 'pipe',
       env: {
         ...process.env,
-        CYPRESS_THREAD: cypressThreadNumber,
+        CYPRESS_THREAD: cypressThreadNumber
       }
     };
     const child = spawn(packageManager, commandArguments, processOptions);

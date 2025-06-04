@@ -21,7 +21,9 @@ async function getTestSuitePaths() {
     fileList = settings.testSuitesPaths;
   } else if (isPattern) {
     console.log(`Using pattern ${settings.testSuitesPath} to find test suites`);
-    fileList = await glob(settings.testSuitesPath, { ignore: 'node_modules/**' });
+    fileList = await glob(settings.testSuitesPath, {
+      ignore: 'node_modules/**'
+    });
   } else {
     console.log(
       'DEPRECATED: using path is deprecated and will be removed, switch to glob pattern'
@@ -49,7 +51,7 @@ async function getTestSuitePaths() {
 function getMaxPathLenghtFrom(testSuitePaths) {
   let maxLength = 10;
 
-  for(let path of testSuitePaths){
+  for (let path of testSuitePaths) {
     maxLength = Math.max(maxLength, path.length);
   }
 

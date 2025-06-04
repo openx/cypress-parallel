@@ -63,9 +63,9 @@ const argv = yargs
     description: 'Strict mode checks'
   })
   .option('weightsJson', {
-     alias: 'w',
-     type: 'string',
-     description: 'Parallel weights json file'
+    alias: 'w',
+    type: 'string',
+    description: 'Parallel weights json file'
   })
   .option('runnerResults', {
     alias: 'x',
@@ -74,7 +74,9 @@ const argv = yargs
   }).argv;
 
 if (!argv.script) {
-  throw new Error('Expected command, e.g.: cypress-parallel-openx <cypress-script>');
+  throw new Error(
+    'Expected command, e.g.: cypress-parallel-openx <cypress-script>'
+  );
 }
 
 const COLORS = [
@@ -107,7 +109,7 @@ const settings = {
   script: argv.script,
   strictMode: argv.strictMode,
   scriptArguments: argv.args ? argv.args.split(' ') : [],
-  runnerResults: argv.runnerResults ? argv.runnerResults : 'runner-results',
+  runnerResults: argv.runnerResults ? argv.runnerResults : 'runner-results'
 };
 
 process.env.CY_PARALLEL_SETTINGS = JSON.stringify(settings);
