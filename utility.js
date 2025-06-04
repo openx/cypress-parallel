@@ -26,9 +26,9 @@ function generateWeightsFile(specWeights, totalDuration, totalWeight) {
   try {
     const weightPath = path.join(process.cwd(), settings.weightsJSON);
     fs.writeFileSync(`${weightPath}`, weightsJson, 'utf8');
-    console.log('Weights file generated under path: ' + weightPath)
-  } catch(e) {
-    console.error(e)
+    console.log('Weights file generated under path: ' + weightPath);
+  } catch (e) {
+    console.error(e);
   }
 }
 

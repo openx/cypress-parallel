@@ -6,7 +6,11 @@ const path = require('path');
 const fs = require('fs-extra');
 const { settings } = require('./settings');
 
-const { getTestSuitePaths, distributeTestsByWeight } = require('./test-suites');
+const {
+  getTestSuitePaths,
+  distributeTestsByWeight,
+  getMaxPathLenghtFrom
+} = require('./test-suites');
 const {
   formatTime,
   generateWeightsFile,
@@ -16,17 +20,19 @@ const { executeThread } = require('./thread');
 const { resultsPath } = require('./shared-config');
 
 function cleanResultsPath() {
-  if(!fs.existsSync(resultsPath)) {
-    fs.mkdirSync(resultsPath, { recursive: true })
+  if (!fs.existsSync(resultsPath)) {
+    fs.mkdirSync(resultsPath, { recursive: true });
   } else {
     fs.readdir(resultsPath, (err, files) => {
       if (err) console.log(err);
-        for (const file of files) {
-          fs.unlink(path.join(resultsPath, file), err => { if (err) console.log(err); });
-        }
-      });
-    }
+      for (const file of files) {
+        fs.unlink(path.join(resultsPath, file), (err) => {
+          if (err) console.log(err);
+        });
+      }
+    });
   }
+}
 
 async function start() {
   cleanResultsPath();
@@ -55,7 +61,7 @@ async function start() {
   let table = new Table({
     head: ['Spec', 'Time', 'Tests', 'Passing', 'Failing', 'Pending'],
     style: { head: ['blue'] },
-    colWidths: [50, 8, 7, 9, 9, 9]
+    colWidths: [getMaxPathLenghtFrom(testSuitePaths), 10, 10, 10, 10, 10]
   });
 
   let totalTests = 0;

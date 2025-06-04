@@ -29,12 +29,16 @@ exports = module.exports = JSONStreamCustom;
  * @param {Object} [options] - runner options
  */
 function JSONStreamCustom(runner, options) {
-  const reporterConfigPath = path.join(process.cwd(), options.reporterOptions.config ? options.reporterOptions.config : 'multi-reporter-config.json');
-  resultsPath = JSON.parse(fs.readFileSync(reporterConfigPath, 'utf8')).runnerResults;
+  const reporterConfigPath = path.join(
+    process.cwd(),
+    options.reporterOptions.config ?? 'multi-reporter-config.json'
+  );
+  resultsPath = JSON.parse(
+    fs.readFileSync(reporterConfigPath, 'utf8')
+  ).runnerResults;
 
   Base.call(this, runner, options);
   var self = this;
-  var total = runner.total;
 
   function cleanStatistics() {
     return {

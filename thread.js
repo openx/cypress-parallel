@@ -12,8 +12,8 @@ function getPackageManager() {
   const pckManager = isYarn
     ? 'yarn'
     : process.platform === 'win32'
-      ? 'npm.cmd'
-      : 'npm';
+    ? 'npm.cmd'
+    : 'npm';
 
   return pckManager;
 }
@@ -51,7 +51,7 @@ function createReporterConfigFile(path) {
 }
 
 function createCommandArguments(thread) {
-  const specFiles = `${thread.list.map(path => globEscape(path)).join(',')}`;
+  const specFiles = `${thread.list.map((path) => globEscape(path)).join(',')}`;
   const childOptions = [
     'run',
     `${settings.script}`,
@@ -78,34 +78,68 @@ function createCommandArguments(thread) {
 async function executeThread(thread, index) {
   const packageManager = getPackageManager();
   const commandArguments = createCommandArguments(thread);
+  const cypressThreadNumber = (index + 1).toString();
+  const threadPrefix = `[${cypressThreadNumber}/${settings.threadCount}]`;
 
   // staggered start (when executed in container with xvfb ends up having a race condition causing intermittent failures)
-  await sleep(index * 5000);
+  await sleep((index + 1) * 2000);
 
   const timeMap = new Map();
 
   const promise = new Promise((resolve, reject) => {
     const processOptions = {
       cwd: process.cwd(),
-      stdio: 'inherit',
+      stdio: 'pipe',
       env: {
         ...process.env,
-        CYPRESS_THREAD: (index + 1).toString()
+        CYPRESS_THREAD: cypressThreadNumber
       }
     };
     const child = spawn(packageManager, commandArguments, processOptions);
 
+    let stdoutBuffer = '';
+
+    child.stdout.on('data', function (chunk) {
+      stdoutBuffer += chunk;
+      const lines = stdoutBuffer.split('\n');
+      while (lines.length > 1) {
+        const line = lines.shift();
+        console.log(threadPrefix, line);
+      }
+      stdoutBuffer = lines.shift();
+    });
+
+    child.stdout.on('end', function () {
+      console.log(threadPrefix, stdoutBuffer);
+    });
+
+    let stderrBuffer = '';
+
+    child.stderr.on('data', function (chunk) {
+      stderrBuffer += chunk;
+      const lines = stderrBuffer.split('\n');
+      while (lines.length > 1) {
+        const line = lines.shift();
+        console.error(threadPrefix, line);
+      }
+      stderrBuffer = lines.shift();
+    });
+
+    child.stderr.on('end', function () {
+      console.error(threadPrefix, stderrBuffer);
+    });
+
     child.on('exit', (exitCode) => {
       if (settings.isVerbose) {
         console.log(
-          `Thread ${index} likely finished with failure count: ${exitCode}`
+          `${threadPrefix} Thread likely finished with failure count: ${exitCode}`
         );
       }
       // should preferably exit earlier, but this is simple and better than nothing
       if (settings.shouldBail) {
         if (exitCode > 0) {
           console.error(
-            'BAIL set and thread exited with errors, exit early with error'
+            `${threadPrefix} BAIL set and thread exited with errors, exit early with error`
           );
           process.exit(exitCode);
         }

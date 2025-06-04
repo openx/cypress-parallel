@@ -66,12 +66,12 @@ function JSONStreamCustom(runner, options) {
     if (settings.isVerbose) {
       consoleLog(format, {
         test: getTestDescription(test),
-        error: test.err.stack,
-      })
+        error: test.err.stack
+      });
     } else {
       consoleLog(format, getTestDescription(test));
-      }
-    });
+    }
+  });
 
   runner.on(EVENT_TEST_PASS, function (test) {
     const format =
