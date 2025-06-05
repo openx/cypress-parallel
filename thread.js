@@ -31,16 +31,12 @@ function createReporterOptions(string) {
 }
 
 function createReporterConfigFile(path) {
-  const reporterEnabled = [
-    '@openx/cypress-parallel-test/json-stream.reporter.js'
-  ];
+  const reporterEnabled = ['@openx/cypress-parallel/json-stream.reporter.js'];
   let reporterName = settings.reporter;
   if (settings.reporter) {
     reporterEnabled.push(reporterName);
   } else {
-    reporterEnabled.push(
-      '@openx/cypress-parallel-test/simple-spec.reporter.js'
-    );
+    reporterEnabled.push('@openx/cypress-parallel/simple-spec.reporter.js');
   }
   const content = {
     reporterEnabled: reporterEnabled.join(', ')
