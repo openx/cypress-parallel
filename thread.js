@@ -82,7 +82,7 @@ async function executeThread(thread, index) {
   const threadPrefix = `[${cypressThreadNumber}/${settings.threadCount}]`;
 
   // staggered start (when executed in container with xvfb ends up having a race condition causing intermittent failures)
-  await sleep((index + 1) * 2000);
+  await sleep((index + 1) * 5000);
 
   const timeMap = new Map();
 
