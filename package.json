@@ -1,5 +1,5 @@
 {
-  "name": "@openx/cypress-parallel",
+  "name": "@openx/cypress-parallel-test",
   "version": "0.15.2",
   "description": "Reduce up to 40% your Cypress suite execution time parallelizing the test run on the same machine.",
   "main": "cli.js",
