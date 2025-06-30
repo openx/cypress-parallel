@@ -144,7 +144,12 @@ async function executeThread(thread, index) {
           process.exit(exitCode);
         }
       }
-      resolve(timeMap);
+
+      if (exitCode === 0) {
+        resolve(timeMap);
+      }
+
+      reject(new Error(`${threadPrefix} Thread exited with code ${exitCode}`));
     });
   });
 

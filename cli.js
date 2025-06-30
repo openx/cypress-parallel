@@ -39,7 +39,8 @@ async function start() {
   const testSuitePaths = await getTestSuitePaths();
   const threads = distributeTestsByWeight(testSuitePaths);
   const start = new Date();
-  await Promise.all(threads.map(executeThread));
+  const results = await Promise.allSettled(threads.map(executeThread));
+  const failedResults = results.filter(r => r.status === 'rejected');
   const end = new Date();
   const timeTaken = end.getTime() - start.getTime();
 
@@ -121,6 +122,14 @@ async function start() {
   if (totalFailures > 0) {
     process.stderr.write(`\x1b[31m${totalFailures} test failure(s)\n`);
     process.exit(1);
+  }
+
+  if (failedResults.length > 0) {
+    console.error(
+      `Some threads failed to execute, check the logs for more details.`
+    );
+    process.stderr.write(`\x1b[31m${failedResults} thread(s) failed to execute\n`);
+    process.exit(failedResults.length);
   }
 
   const timeSaved = totalDuration - timeTaken;
